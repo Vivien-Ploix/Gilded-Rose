@@ -10,42 +10,6 @@ class Item {
     if (this.quality > 50) { this.quality = 50}
     if (this.quality < 0) {this.quality = 0}
   }
-  
-  agedBrieUpdate(){
-    this.updateQuality(1)
-  }
-
-  backstageUpdate(){
-    if (this.sellIn > 10) { 
-      this.updateQuality(1)
-    } else if (this.sellIn <= 10 && this.sellIn > 5) {
-      this.updateQuality(2);
-    } else if (this.sellIn <= 5 && this.sellIn > 0) {
-      this.updateQuality(3)
-    } else if (this.sellIn <= 0) {
-      this.quality = 0;
-    }
-  }
-
-  sulfuraUpdate(){
-    this.quality = 80;
-  }
-
-  conjuredItemUpdate(){
-    if (this.sellIn > 0) {
-      this.updateQuality(-2);
-    } else {
-      this.updateQuality(-4);
-    }
-  }
-
-  otherItemUpdate(){
-    if (this.sellIn > 0) {
-      this.updateQuality(-1);
-    } else {
-      this.updateQuality(-2)
-    }
-  }
 }
 
 
@@ -54,22 +18,59 @@ class Shop {
   constructor(items=[]){
     this.items = items;
   }
+
   updateQuality() {
     this.items.map(item => {
       item.sellIn -= 1;
       if(item.name === "Sulfuras") {
-        item.sulfuraUpdate()
+        this.sulfuraUpdate(item)
       } else if (item.name === "Aged Brie") {
-        item.agedBrieUpdate()
+        this.agedBrieUpdate(item)
       } else if (item.name.includes("Backstage passes")) {
-        item.backstageUpdate()
+        this.backstageUpdate(item)
       } else if (item.name.startsWith("Conjured")) {
-        item.conjuredItemUpdate()
+        this.conjuredItemUpdate(item)
       } else {
-        item.otherItemUpdate()
+        this.otherItemUpdate(item)
       }
     })
     return this.items;
+  }
+
+  agedBrieUpdate(item){
+    item.updateQuality(1)
+  }
+
+  backstageUpdate(item){
+    if (item.sellIn > 10) { 
+      item.updateQuality(1)
+    } else if (item.sellIn <= 10 && item.sellIn > 5) {
+      item.updateQuality(2);
+    } else if (item.sellIn <= 5 && item.sellIn > 0) {
+      item.updateQuality(3)
+    } else if (item.sellIn <= 0) {
+      item.quality = 0;
+    }
+  }
+
+  sulfuraUpdate(item){
+    item.quality = 80;
+  }
+
+  conjuredItemUpdate(item){
+    if (item.sellIn > 0) {
+      item.updateQuality(-2);
+    } else {
+      item.updateQuality(-4);
+    }
+  }
+
+  otherItemUpdate(item){
+    if (item.sellIn > 0) {
+      item.updateQuality(-1);
+    } else {
+      item.updateQuality(-2)
+    }
   }
 
 }
